@@ -1,0 +1,125 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Real-time Chat</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+
+      #chat {
+        max-width: 500px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        padding: 20px;
+      }
+
+      #messages {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      #messages li {
+        margin-bottom: 10px;
+      }
+
+      #messageForm input[type="text"] {
+        width: 75%;
+        padding: 5px;
+      }
+
+      #messageForm button {
+        padding: 5px 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.3/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div id="chat">
+      <h1>Real-time Chat</h1>
+      <ul id="messages"></ul>
+      <form id="messageForm">
+        <input type="text" id="inputMessage" placeholder="Enter message" />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+
+    <script>
+      // Establish a WebSocket connection with the server
+      const socket = io();
+
+      // Keep track of the last displayed message timestamp
+      let lastMessageTimestamp = null;
+
+      // Handle new message received from the server
+      socket.on("newMessage", (data) => {
+        displayMessage(data);
+      });
+
+      // Send message when the form is submitted
+      $("#messageForm").submit((e) => {
+        e.preventDefault();
+        const empId = "2"; // Replace with actual employee ID
+        const custId = "20"; // Replace with actual customer ID
+        const message = $("#inputMessage").val();
+
+        if (message.trim() !== "") {
+          // Determine sender based on the user role (employee or customer)
+          const sender = "emp"; // Replace with "cust" for customers
+
+          // Emit the appropriate event based on the sender
+          if (sender === "emp") {
+            socket.emit("sendMessageEmployee", { empId, custId, message });
+          } else {
+            socket.emit("sendMessageCustomer", { empId, custId, message });
+          }
+
+          // Clear the input field after sending the message
+          $("#inputMessage").val("");
+        }
+      });
+
+      // Fetch new messages every 2 seconds
+      setInterval(fetchMessages, 2000);
+
+      // Function to fetch new messages from the server
+      function fetchMessages() {
+        const empId = "2"; // Replace with actual employee ID
+        const custId = "20"; // Replace with actual customer ID
+
+        const url = `/allMessage/employee/${empId}/${custId}`;
+
+        if (lastMessageTimestamp) {
+          url += `?timestamp=${lastMessageTimestamp}`;
+        }
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.length > 0) {
+              data.forEach((message) => displayMessage(message));
+              // Update the last displayed message timestamp
+              lastMessageTimestamp = data[data.length - 1].timestamp;
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+
+      // Function to display a new message in the chat interface
+      function displayMessage(data) {
+        const { sender, content } = data;
+        const messageElement = $("<li>").text(`${sender}: ${content}`);
+        $("#messages").append(messageElement);
+      }
+    </script>
+  </body>
+</html>

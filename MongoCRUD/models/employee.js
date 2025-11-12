@@ -10,7 +10,7 @@ const employ=new mongoose.Schema(
         {
             type:String
         },
-        age:
+        age1:
         {
             type:Number
         }

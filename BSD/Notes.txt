@@ -1,0 +1,74 @@
+Database 
+
+1. Driver 
+id
+name 
+
+2. Material
+id 
+name
+code 
+price
+unit
+
+3. Vehicle
+id
+no 
+name
+
+Order
+totalAmount
+sgst
+cgst
+grossamount
+custId
+orderStatus |  deliverd or not cancel | bill generate 
+
+Order.hasMany Line Items
+
+4. Order_Line_Items
+id
+material id
+quantity
+rate
+price
+address
+village 
+contactPersonNo
+status particular line item delived or not or cancel 
+
+
+payment initialised if recived the order 
+
+5. Customers
+id
+name
+address
+phone
+villageName
+city
+tal
+
+6. Bill
+oderHistory + payment method
+date
+paymentType cash onlint
+transaction id
+image
+order_id 
+
+7. paymenthistory
+id
+date
+paymentType cash onlint
+transaction id
+image
+order_id 
+
+actual bill - payed history = remaining amount 
+
+everyday incoming outcoming also mentioned
+
+
+
+

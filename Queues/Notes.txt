@@ -1,0 +1,33 @@
+similar to normal queue
+
+eg. 
+ecoomerce website - customer place order
+1. email send
+2. order process 
+
+messages mhanje queues operations which is taken by server
+
+1. notification system 
+2. email system 
+3. push notification like linked in connection mail 
+
+Automations that works on queue like first process then process 
+
+video upload 
+360 480 720 1080 
+1. s3 bucket upload
+2. redis madhe key location push 
+3. server listen the message 
+4. process the videos 
+5. send the message 
+
+suppouse 1 queue madhe 1,2,3,4 message ahet 
+server ne 1 , 2 , 3 ,4 process kel 
+but some issue 3 process kartana band jala so nect to direct 4 ghenar but apan ith 3 loss kela
+ yach 1 solution ahe ki 3 la parat tya queue madhe taku shakto jar serve fail asel tar pn tyat 1
+ issue ahe ki 3 jar currepted asel tar parat to server down karel ani apala server infinite loop 
+ madhe firel
+ so yala sol ahe ki 1 dusri queue banvun tyat te message tak 
+
+bull mq use for handling queue
+redis use hot 

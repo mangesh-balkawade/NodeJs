@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const routes=require('./routes/routes.js')
+const routes = require('./routes/routes.js')
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -15,7 +15,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 database =
-  "mongodb+srv://marvellous:marvellous@marvellous.ihqyjz4.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://marvellous:marvellous@marvellous.ihqyjz4.mongodb.net/";
+
 
 mongoose
   .connect(database)
@@ -23,7 +24,7 @@ mongoose
     console.log("DataBase Connected");
   })
   .catch((err) => {
+    console.log(err);
     console.log("unable  to connect");
   });
 
-  
